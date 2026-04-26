@@ -2,7 +2,7 @@ clear;
 clc;
 close all;
 
-run('intialization.m');
+run('initialization.m');
 run('scene_reduction.m');
 
 %% 概率
@@ -66,7 +66,7 @@ x = 1:24;
 
 for s = 1:5
     y = s * ones(1,24);
-    z = P_wind_pre(s, 1:24);
+    z = P_data(s, 1:24);
     plot3(x, y, z, 'LineWidth', 1.5);
     hold on;
 end
@@ -86,7 +86,7 @@ x = 1:24;
 
 for s = 1:5
     y = s * ones(1,24);
-    z = P_wind_pre(s, 25:48);
+    z = P_data(s, 25:48);
     plot3(x, y, z, 'LineWidth', 1.5);
     hold on;
 end
@@ -106,7 +106,7 @@ x = 1:24;
 
 for s = 1:5
     y = s * ones(1,24);
-    z = P_wind_pre(s, 49:72);
+    z = P_data(s, 49:72);
     plot3(x, y, z, 'LineWidth', 1.5);
     hold on;
 end

@@ -20,11 +20,11 @@ for t = 1:24
     vco = 25;%cut out velocity
 
     for i = 1:times
-        if wt_samp(i) < vci;%未达到开机风速
+        if wt_samp(i) < vci%未达到开机风速
             Pwt_samp(i) = 0;
         end
         
-        if wt_samp(i) > vci & wt_samp(i) < vN%达到开机风速但未达到额定风速
+        if wt_samp(i) > vci && wt_samp(i) < vN%达到开机风速但未达到额定风速
             Pwt_samp(i) = (wt_samp(i) - vci) / (vN - vci) * PN_wt;
 
             if Pwt_samp(i) > PN_wt
@@ -32,7 +32,7 @@ for t = 1:24
             end
         end
 
-        if wt_samp(i) > vN & wt_samp(i) < vco%达到额定风速但未达到切出风速
+        if wt_samp(i) > vN && wt_samp(i) < vco%达到额定风速但未达到切出风速
             Pwt_samp(i) = PN_wt;
         end
 

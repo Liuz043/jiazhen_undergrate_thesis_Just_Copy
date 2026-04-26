@@ -1,6 +1,6 @@
-clear;
-clc;
-close all;
+clear
+clc
+close all
 
 run('initialization.m');
 run('scene_reduction.m');

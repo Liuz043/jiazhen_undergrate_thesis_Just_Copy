@@ -9,7 +9,7 @@ clear,clc
     H_b = parameter(:,6);
 
 for t = 1:24
-    %%风电需求%%
+    %% 风电需求
     c_wt = WT_c(t);
     k_wt = WT_k(t);
     wt_samp = wblrnd(c_wt, k_wt, 1, times);
@@ -20,11 +20,11 @@ for t = 1:24
     vco = 25;%cut out velocity
 
     for i = 1:times
-        if wt_samp(i) < vci;
+        if wt_samp(i) < vci;%未达到开机风速
             Pwt_samp(i) = 0;
         end
         
-        if wt_samp(i) > vci & wt_samp(i) < vN
+        if wt_samp(i) > vci & wt_samp(i) < vN%达到开机风速但未达到额定风速
             Pwt_samp(i) = (wt_samp(i) - vci) / (vN - vci) * PN_wt;
 
             if Pwt_samp(i) > PN_wt
@@ -32,34 +32,34 @@ for t = 1:24
             end
         end
 
-        if wt_samp(i) > vN & wt_samp(i) < vco
+        if wt_samp(i) > vN & wt_samp(i) < vco%达到额定风速但未达到切出风速
             Pwt_samp(i) = PN_wt;
         end
 
-        if wt_samp(i) > vco
+        if wt_samp(i) > vco%停机保护
             Pwt_samp(i) = 0;
         end
             
 
     end
 
-    %%光伏需求%%
-    Ppv_samp = zeros(1,tiems);
+    %% 光伏需求
+    Ppv_samp = zeros(1,times);
     a_pv = PV_a(t);
     b_pv = PV_b(t);
 
-    if a_pv > 1
+    if a_pv > 1%有光，也就是白天
         S_pv = 8;
         prey_pv=0.14;
         rmax = 700;
         pv_samp(1,:) = betarnd(a_pv, b_pv, 1, times);
         Ppv_samp(1,:) = pv_samp(1,:) * rmax * S_pv * prey_pv;
-    else
+    else%没有光，也就是晚上
         Ppv_samp = zeros(1, times);
         
     end
 
-    %%氢负荷需求%%
+    %% 氢负荷需求
     Ph_samp = zeros(1, times);
     a_h = H_a(t);
     b_h = H_b(t);

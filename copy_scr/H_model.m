@@ -32,6 +32,7 @@ P_ba_c_max = 500; %最大充电功率
 P_ba_dis_max = 600; %最大放电功率
 el_om_coeff = 0.022; %电解槽运维成本系数
 ba_om_coeff = 0.00018; %储能运维成本系数
+
 P_el = sdpvar(1,24); %每小时输入电功率
 P_com =  sdpvar(1,24); %压缩机耗电功率
 H_tank_press = sdpvar(1,24); %t时刻储氢罐内部气压
@@ -65,7 +66,7 @@ for i = 1:24
     C3 = [C3,  P_el(i+1) - P_el(i) <= P_el_rp_max]; 
     C3 = [C3,  P_el(i) - P_el(i+1) <= P_el_rp_max]; 
     end
-    C3 = [C3,  P_com(i) >= H_avg(i)*2.85;]; 
+    C3 = [C3,  P_com(i) >= H_avg(i)*2.85]; 
     C3 = [C3,  P_ba_c(i) <= ubatt(i) * P_ba_c_max];
     C3 = [C3,  P_ba_c(i) >= 0];
     C3 = [C3,  P_ba_dis(i) >= 0];
@@ -77,7 +78,7 @@ end
 
 %% 定义目标函数
 cost_H_from_G = P_H_from_G * price_G; %电制氢主体从电网购电的成本
-cost_H_om = el_om_coeff * sum(P_el) + ba_om_coeff * (sum(P_ba_c)+sum(P_ba_dis)^2); %电制氢运维成本
+cost_H_om = el_om_coeff * sum(P_el) + ba_om_coeff * (sum(P_ba_c)+sum(P_ba_dis))^2; %电制氢运维成本
 obj_H_Total_cost =  cost_H_from_G + cost_H_om; %电制氢的全部成本  
 
 %% 求解问题 

@@ -92,6 +92,8 @@ sol_P_el = value(P_el); %获取电解槽设备功率
 sol_P_ba_c = value(P_ba_c); %获取充电功率
 sol_P_com = value(P_com); %获取压缩机设备功率
 
+H_noncoop_ideal_cost = - value(obj_H_Total_cost); %获取电制氢成本
+
 %% 绘图
 hours = 1:24;
 y1label3 = sol_P_H_from_g; % 左轴数据（电制氢电网购电量）

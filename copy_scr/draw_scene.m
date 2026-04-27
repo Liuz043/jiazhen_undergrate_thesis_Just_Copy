@@ -1,8 +1,8 @@
-clear
-clc
-close all
+clear;
+clc;
+close all;
 
-run('initialization.m');
+run('generate_scene.m');
 run('scene_reduction.m');
 
 %% 概率

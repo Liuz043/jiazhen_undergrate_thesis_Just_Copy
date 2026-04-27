@@ -45,6 +45,9 @@ fprintf('Example problem: %s. \n', p1.info);
 
 sol_P_WT2G = value(P_WT2G); % 获取向电网出售的电量
 sol_P_WT2H = value(P_WT2H); % 获取向电制氢出售的电量
+
+WT_noncoop_ideal_profit = - value(obj_WT_profit); % 获取风电利润
+
 revenue_WT = sum(WT_avg) * price_WT2G; % 实际收入
 profit_WT = revenue_WT - cost_WT_om; % 实际收入减去发电成本
 

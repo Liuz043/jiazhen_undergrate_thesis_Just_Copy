@@ -37,42 +37,61 @@ P_el = sdpvar(1,24); %每小时输入电功率
 P_com =  sdpvar(1,24); %压缩机耗电功率
 H_tank_press = sdpvar(1,24); %t时刻储氢罐内部气压
 H_tank_t0 = 28; %定义储氢罐内部0时刻气压
-H_tank_press(1) = H_tank_t0;
+
 P_H_from_G =  sdpvar(1,24); %t时刻电制氢主体向电网买的购电量
 P_ba_c =  sdpvar(1,24); %t时刻充电功率
 P_ba_dis =  sdpvar(1,24); %t时刻放电功率
 ubatt = binvar(1,24,'full'); %二进制变量，用来表示t时刻是充电还是放电，放电时为0
+
 E_ba_t0 = 1000; %t0时刻储能量
 E_ba = sdpvar(1,24); %t时刻储能量
-E_ba(1) = E_ba_t0;
-for i = 2:24
-    H_tank_press(i) = H_tank_press(i-1) + H_spec2Heat*Temp_tank_H*(Flow_com_H - H_avg(i)/10000)/(volume_tank_H * H_mol); %计算t时刻储氢罐内部气压
-end
-for i = 2:24
-   E_ba(i) = E_ba(i-1) + (P_ba_c(i) * E_ba_c - P_ba_dis(i)/E_ba_dis) ; %计算储能充放电功率
-end
-for i = 1:24
-    P_el(i) = H_tank_press(i)/H_yield_coeff; %计算t时刻电解槽耗电功率
-end
 
 %% 求解氢能个体与电网的成本，不参与合作
 C3 = []; 
+
+% 初始化状态约束
+C3 = [C3, H_tank_press(1) == H_tank_t0];
+C3 = [C3, E_ba(1) == E_ba_t0];
+
+% 动态约束
+for i = 2:24
+    C3 = [C3, H_tank_press(i) == H_tank_press(i-1) ...
+        + H_spec2Heat * Temp_tank_H ...
+        * (Flow_com_H - H_avg(i)/10000) ...
+        / (volume_tank_H * H_mol)];
+
+
+    C3 = [C3, E_ba(i) == E_ba(i-1) ...
+        + P_ba_c(i) * E_ba_c ...
+        - P_ba_dis(i) / E_ba_dis];
+end
+
+% 运行约束
 for i = 1:24 
+    C3 = [C3, P_el(i) == H_tank_press(i) / H_yield_coeff];
+
     C3 = [C3,  P_el(i) >= 0]; 
     C3 = [C3,  P_el(i) <= P_el_max]; 
+
     C3 = [C3,  H_tank_press(i) >= H_tank_press_min];
     C3 = [C3,  H_tank_press(i) <= H_tank_press_max];
+
     if i <= 23
     C3 = [C3,  P_el(i+1) - P_el(i) <= P_el_rp_max]; 
     C3 = [C3,  P_el(i) - P_el(i+1) <= P_el_rp_max]; 
     end
+
     C3 = [C3,  P_com(i) >= H_avg(i)*2.85]; 
+
     C3 = [C3,  P_ba_c(i) <= ubatt(i) * P_ba_c_max];
     C3 = [C3,  P_ba_c(i) >= 0];
+
     C3 = [C3,  P_ba_dis(i) >= 0];
     C3 = [C3,  P_ba_dis(i) <= (1 - ubatt(i)) * P_ba_dis_max];
+
     C3 = [C3,  E_ba(i) >= E_ba_min];
     C3 = [C3,  E_ba(i) <= E_ba_max];
+
     C3 = [C3,  P_H_from_G(i)+ P_ba_dis(i) == P_el(i)+P_ba_c(i)+P_com(i)];
 end 
 

@@ -12,4 +12,4 @@ run('H_model.m');
 disp('非合作阶段成果');
 disp(['风电非合作最大利润 = ', num2str(WT_noncoop_ideal_profit)]);
 disp(['光伏非合作最大利润 = ', num2str(PV_noncoop_ideal_profit)]);
-disp(['电制氢非合作最大利润 = ', num2str(H_noncoop_ideal_cost)]);
+disp(['电制氢非合作最小成本 = ', num2str(H_noncoop_ideal_cost)]);

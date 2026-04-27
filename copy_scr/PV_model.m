@@ -13,7 +13,8 @@ end
 P_PV2G = sdpvar(1,24);  % 向电网出售的电量
 P_PV2H = sdpvar(1,24);  % 向电制氢主体的售电量
 price_PV2G = 0.40; % 光伏上网电价
-cost_PV_om = 0.0085; % 光伏单位发电量维护成本系数
+cost_PV_om_coeff = 0.0085; % 光伏单位发电量维护成本系数
+
 cost_PV2H_quad = 0.00003; % 过网费折算系数1
 cost_PV2H_linear = 0.01; % 过网费折算系数2
 
@@ -22,16 +23,20 @@ C2 = [];
 for i = 1:24
     C2 = [C2, P_PV2G(i) >= 0];
     C2 = [C2, P_PV2G(i) <= PV_avg(i)];
+
     C2 = [C2, P_PV2H(i) >= 0];
     C2 = [C2, P_PV2H(i) <= PV_avg(i)];
+
     C2 = [C2, P_PV2G(i) + P_PV2H(i) == PV_avg(i)];
 end
 
 %% 定义目标函数
 revenue_PV2G = sum(P_PV2G) * price_PV2G; % 向电网出售的收益
 revenue_PV2H = P_PV2H * price_G; % 向电制氢出售的收益
-cost_PV_om = sum(PV_avg) * cost_PV_om; % 发电成本
+
+cost_PV_om = sum(PV_avg) * cost_PV_om_coeff; % 发电成本
 cost_PV2H = cost_PV2H_quad * sum(P_PV2H)^2 + cost_PV2H_linear * sum(P_PV2H); % 售电给电制氢的成本
+
 obj_PV_neg_profit = - (revenue_PV2G + revenue_PV2H - cost_PV_om - cost_PV2H); % 利润减成本
 
 %% 求解问题
@@ -45,8 +50,8 @@ sol_P_PV2H = value(P_PV2H); % 获取向电制氢出售的电量
 
 PV_noncoop_ideal_profit = - value(obj_PV_neg_profit); % 获取光伏利润
 
-revenue_PV_G_only = sum(PV_avg) * price_PV2G; % 实际收入
-profit_PV_G_only = revenue_PV_G_only - cost_PV_om; % 实际收入减去发电成本
+revenue_PV_G_only = sum(PV_avg) * price_PV2G; % 理想最大收入
+profit_PV_G_only = revenue_PV_G_only - cost_PV_om; % 理想最大利润（指全部卖给电网）
 
 %% 绘图
 hours = 1:24;

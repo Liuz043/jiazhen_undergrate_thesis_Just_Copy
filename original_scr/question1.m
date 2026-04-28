@@ -29,29 +29,39 @@ C4 = [];
 for i = 1:24 
     C4 = [C4,  a_1(i) >= 0]; 
     C4 = [C4,  a_1(i) <= windf(i)]; 
+
     C4 = [C4,  p_wt2ht(i) >= 0]; 
     C4 = [C4,  p_wt2ht(i) <= windf(i)]; 
+
     C4 = [C4, a_1(i) + p_wt2ht(i) == windf(i)]; %风电主体约束
+    
     C4 = [C4,  a_2(i) >= 0]; 
     C4 = [C4,  a_2(i) <= rayf(i)]; 
     C4 = [C4,  p_pv2ht(i) >= 0]; 
     C4 = [C4,  p_pv2ht(i) <= rayf(i)]; 
     C4 = [C4, a_2(i) + p_pv2ht(i) == rayf(i)]; %光电主体约束
+    
     C4 = [C4,  pelt(i) >= 0]; 
     C4 = [C4,  pelt(i) <= pelmax]; 
     C4 = [C4,  ph2t(i) >= ph2min];
     C4 = [C4,  ph2t(i) <= ph2max];
+    
     if i <= 23
     C4 = [C4,  pelt(i+1) - pelt(i) <= pelrp]; 
     C4 = [C4,  pelt(i) - pelt(i+1) <= pelrp]; 
     end
+
     C4 = [C4,  ptcom2(i) >= Lh2t(i)*2.85;]; 
+    
     C4 = [C4,  pbatct(i) <= ubatt1(i) * pbatcmax];
     C4 = [C4,  pbatct(i) >= 0];
+    
     C4 = [C4,  pbatdt(i) >= 0];
     C4 = [C4,  pbatdt(i) <= (1 - ubatt1(i)) * pbatdmax];
+   
     C4 = [C4,  ebatt(i) >= ebatmin];
     C4 = [C4,  ebatt(i) <= ebatmax];
+    
     C4 = [C4,  phgt(i)>=0];
     C4 = [C4,  phgt(i)+ pbatdt(i)+ p_wt2ht(i)+ p_pv2ht(i) == pelt(i)+pbatct(i)+ptcom2(i)]; %电制氢主体约束
 end   
@@ -60,14 +70,17 @@ a_11 = sum(a_1) * d1; %风电出售给电网的收益
 a_13 = sum(windf) * e1 ; %风电场发电所需成本
 a_14 = f1 * sum(p_wt2ht)^2 + g1 * sum(p_wt2ht);%风电场售电给电制氢的成本
 Wwt = a_11 - a_13 - a_14; %风电场合作的整体收益
+
 a_21 = sum(a_2) * d2; %光电出售给电网的收益
 a_23 = sum(rayf) * e2 ; %光伏电场发电所需成本
 a_24 = f2 * sum(p_pv2ht)^2 + g2 * sum(p_pv2ht);%光伏电场售电给电制氢的成本
 Wpv = a_21 - a_23 - a_24; %光伏场合作的整体收益
+
 chg = phgt * b1 ; %电制氢主体从电网购电的成本
 chm = kel * sum(pelt) + kbat * (sum(pbatct)+sum(pbatdt)^2); %电制氢运维成本
 Wh =  -(chg + chm); %电制氢的全部成本
 Fz1 = -(Wwt + Wpv + Wh); %合作1的整体收益
+
 %%%% 求解问题 
 options = sdpsettings('solver','cplex'); % 使用求解器cplex求解 
 p1 = optimize(C4, Fz1, options); % 服从C，最小化f   

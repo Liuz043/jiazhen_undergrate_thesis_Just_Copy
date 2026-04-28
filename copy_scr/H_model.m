@@ -72,7 +72,7 @@ end
 
 %% 定义目标函数
 cost_H_from_G = P_H_from_G * price_G; %电制氢主体从电网购电的成本
-cost_H_om = el_om_coeff * sum(P_el) + ba_om_coeff * (sum(P_ba_c)+sum(P_ba_dis))^2; %电制氢运维成本
+cost_H_om = el_om_coeff * sum(P_el) + ba_om_coeff * sum((P_ba_c+P_ba_dis).^2); %电制氢运维成本
 obj_cost_H_Total =  cost_H_from_G + cost_H_om; %电制氢的全部成本  
 
 %% 求解问题 

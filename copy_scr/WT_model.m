@@ -32,7 +32,7 @@ revenue_WT2G = sum(P_WT2G) * price_WT2G; % 向电网出售的收益
 revenue_WT2H = P_WT2H * price_G; % 向电制氢出售的收益
 
 cost_WT_om = sum(WT_avg) * cost_WT_om_coeff; % 发电成本
-cost_WT2H = cost_WT2H_quad_coeff * sum(P_WT2H)^2 + cost_WT2H_linear_coeff * sum(P_WT2H); % 售电给电制氢的成本
+cost_WT2H = cost_WT2H_quad_coeff * sum(P_WT2H.^2) + cost_WT2H_linear_coeff * sum(P_WT2H); % 售电给电制氢的成本
 
 obj_WT_profit = - (revenue_WT2G + revenue_WT2H - cost_WT_om - cost_WT2H); % 利润减成本
 

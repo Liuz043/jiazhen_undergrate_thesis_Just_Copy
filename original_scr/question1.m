@@ -19,7 +19,7 @@ for i = 2:24
     ph2t(i) = ph2t(i-1) + rh2*th2*(mtcom - Lh2t(i)/10000)/(vh2 * molh2); %计算t时刻储氢罐内部气压
 end
 for i = 2:24
-   ebatt(i) = ebatt(i-1) + (pbat0ct(i) * ebatc - pbat0dt(i)/ebatd) ; %计算储能充放电功率
+   ebatt(i) = ebatt(i-1) + (pbatct(i) * ebatc - pbatdt(i)/ebatd) ; %计算储能充放电功率
 end
 for i = 1:24
     pelt(i) = ph2t(i)/nh2; %计算t时刻电解槽耗电功率
@@ -68,16 +68,16 @@ end
 %% 定义目标函数f 
 a_11 = sum(a_1) * d1; %风电出售给电网的收益
 a_13 = sum(windf) * e1 ; %风电场发电所需成本
-a_14 = f1 * sum(p_wt2ht)^2 + g1 * sum(p_wt2ht);%风电场售电给电制氢的成本
+a_14 = f1 * sum(p_wt2ht.^2) + g1 * sum(p_wt2ht);%风电场售电给电制氢的成本
 Wwt = a_11 - a_13 - a_14; %风电场合作的整体收益
 
 a_21 = sum(a_2) * d2; %光电出售给电网的收益
 a_23 = sum(rayf) * e2 ; %光伏电场发电所需成本
-a_24 = f2 * sum(p_pv2ht)^2 + g2 * sum(p_pv2ht);%光伏电场售电给电制氢的成本
+a_24 = f2 * sum(p_pv2ht.^2) + g2 * sum(p_pv2ht);%光伏电场售电给电制氢的成本
 Wpv = a_21 - a_23 - a_24; %光伏场合作的整体收益
 
 chg = phgt * b1 ; %电制氢主体从电网购电的成本
-chm = kel * sum(pelt) + kbat * (sum(pbatct)+sum(pbatdt))^2; %电制氢运维成本
+chm = kel * sum(pelt) + kbat * sum((pbatct + pbatdt).^2); %电制氢运维成本
 Wh =  -(chg + chm); %电制氢的全部成本
 Fz1 = -(Wwt + Wpv + Wh); %合作1的整体收益
 

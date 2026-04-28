@@ -45,7 +45,7 @@ C5 = [C5, gain_H >= 0];
 obj_neg_nash_log = - (log(gain_WT) + log(gain_PV) + log(gain_H));
 
 %% 求解问题
-options = sdpsettings('solver','gurobi'); % 使用求解器mosek求解 指数问题
+options = sdpsettings('solver','mosek'); % 使用求解器mosek求解 指数问题
 p3 = optimize(C5, obj_neg_nash_log, options);
 
 fprintf('Cooperation question 2: %s.\n', p3.info);

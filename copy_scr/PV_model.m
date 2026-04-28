@@ -30,7 +30,7 @@ revenue_PV2G = sum(P_PV2G) * price_PV2G; % 向电网出售的收益
 revenue_PV2H = P_PV2H * price_G; % 向电制氢出售的收益
 
 cost_PV_om = sum(PV_avg) * cost_PV_om_coeff; % 发电成本
-cost_PV2H = cost_PV2H_quad_coeff * sum(P_PV2H)^2 + cost_PV2H_linear_coeff * sum(P_PV2H); % 售电给电制氢的成本
+cost_PV2H = cost_PV2H_quad_coeff * sum(P_PV2H.^2) + cost_PV2H_linear_coeff * sum(P_PV2H); % 售电给电制氢的成本
 
 obj_PV_neg_profit = - (revenue_PV2G + revenue_PV2H - cost_PV_om - cost_PV2H); % 利润减成本
 

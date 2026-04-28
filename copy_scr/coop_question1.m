@@ -91,19 +91,19 @@ end
 %% 定义目标函数，最大化风光氢联盟的总利润
 revenue_WT_coop = sum(P_WT2G_coop) * price_WT2G; % 向电网出售的风电收益
 cost_WT_om_coop = sum(WT_avg) * cost_WT_om_coeff; % 风电运维成本
-cost_WT2H_coop = cost_WT2H_quad_coeff * sum(P_WT2H_coop)^2 ...
+cost_WT2H_coop = cost_WT2H_quad_coeff * sum(P_WT2H_coop.^2) ...
     + cost_WT2H_linear_coeff * sum(P_WT2H_coop);% 售电给电制氢的成本
 profit_WT_coop_Total = revenue_WT_coop - cost_WT_om_coop - cost_WT2H_coop; % 风电主体总利润
 
 revenue_PV_coop = sum(P_PV2G_coop) * price_PV2G; % 向电网出售的光伏收益
 cost_PV_om_coop = sum(PV_avg) * cost_PV_om_coeff; % 光伏运维成本
-cost_PV2H_coop = cost_PV2H_quad_coeff * sum(P_PV2H_coop)^2 ...
+cost_PV2H_coop = cost_PV2H_quad_coeff * sum(P_PV2H_coop.^2) ...
     + cost_PV2H_linear_coeff * sum(P_PV2H_coop); % 售电给电制氢的成本
 profit_PV_coop_Total = revenue_PV_coop - cost_PV_om_coop - cost_PV2H_coop; % 光伏主体总利润
 
 cost_H_from_G_coop = P_H_from_G_coop * price_G; % 电制氢主体从电网购电的成本
 cost_H_om_coop = el_om_coeff * sum(P_el_coop) ...
-    + ba_om_coeff * (sum(P_ba_c_coop)+sum(P_ba_dis_coop))^2; % 电制氢运维成本
+    + ba_om_coeff * sum((P_ba_c_coop+P_ba_dis_coop).^2); % 电制氢运维成本
 cost_H_coop_Total = cost_H_from_G_coop + cost_H_om_coop; % 电制氢主体总成本
 
 obj_neg_revenue_coop = - (profit_WT_coop_Total + profit_PV_coop_Total - cost_H_coop_Total); % 联盟总利润
@@ -146,3 +146,7 @@ ylim([0 3000]);  % 设置左轴范围
 set(gca, 'XTick', hours);  % 显示所有小时刻度
 grid on;
 legend([bb1, bb2, bb3], {'电网购电量', '风电购电量','光伏购电量'}, 'Location', 'northwest');
+
+disp('WT_avg = '); disp(WT_avg);
+disp('PV_avg = '); disp(PV_avg);
+disp('price_G = '); disp(price_G');

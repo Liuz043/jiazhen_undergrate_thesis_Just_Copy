@@ -15,7 +15,7 @@ run('H_model.m');
 run('coop_question1.m');
 run('coop_question2.m');
 
-% run('result_summary.m');
+run('result_summary.m');
 
 % disp('非合作阶段成果');
 % disp(['风电非合作最大利润 = ', num2str(ideal_profit_WT_noncoop)]);

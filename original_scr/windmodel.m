@@ -30,7 +30,7 @@ end
 a11 = sum(a1) * d1; %风电出售给电网的收益
 Uwt2h = pwt2ht * b1; %风电出售给电制氢的收益
 a13 = sum(windf) * e1 ; %风电场发电所需成本
-a14 = f1 * sum(pwt2ht)^2 + g1 * sum(pwt2ht);%风电场售电给电制氢的成本
+a14 = f1 * sum(pwt2ht.^2) + g1 * sum(pwt2ht);%风电场售电给电制氢的成本
 Fwind =  - (a11 + Uwt2h - a13 - a14); %利润减成本，由于是最小化求解，前面加负号
 %% 求解问题 
 options = sdpsettings('solver','gurobi'); % 使用求解器cplex求解 

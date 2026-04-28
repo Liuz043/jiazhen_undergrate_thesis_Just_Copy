@@ -74,7 +74,7 @@ for i = 1:24
 end 
 %%%% 定义目标函数f 
 chg = phg0t * b1; %电制氢主体从电网购电的成本
-chm = kel * sum(pel0t) + kbat * (sum(pbat0ct)+sum(pbat0dt))^2; %电制氢运维成本
+chm = kel * sum(pel0t) + kbat * sum((pbat0ct + pbat0dt).^2); %电制氢运维成本
 Uh0 =  chg + chm; %电制氢的全部成本  
 %%%% 求解问题 
 options = sdpsettings('solver','gurobi'); % 使用求解器cplex求解 

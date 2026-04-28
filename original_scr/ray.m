@@ -28,7 +28,7 @@ end
 a21 = sum(a2) * d2; %光电出售给电网的收益
 Upv2h = ppv2ht * b1; %光电出售给电制氢的收益
 a23 = sum(rayf) * e2 ; %光伏电场发电所需成本
-a24 = f2 * sum(ppv2ht)^2 + g2 * sum(ppv2ht);%光伏电场售电给电制氢的成本
+a24 = f2 * sum(ppv2ht.^2) + g2 * sum(ppv2ht);%光伏电场售电给电制氢的成本
 Fray =  - (a21 + Upv2h - a23 - a24); %利润减成本，由于是最小化求解，前面加负号  
 %%%% 求解问题 
 options = sdpsettings('solver','gurobi'); % 使用求解器cplex求解 

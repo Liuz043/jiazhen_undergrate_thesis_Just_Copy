@@ -1,4 +1,7 @@
 clear,clc
+
+rng(20); % 设置随机数种子，确保结果可复现
+
     times=1000;%场景数
     parameter=load('parameters.txt');
     WT_c=parameter(:,1);%风电参数 24个不同时刻下的参数1

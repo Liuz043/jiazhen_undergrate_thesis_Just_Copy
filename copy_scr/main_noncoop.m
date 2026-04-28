@@ -15,7 +15,7 @@ run('H_model.m');
 run('coop_question1.m');
 run('coop_question2.m');
 
-run('result_summary.m');
+% run('result_summary.m');
 
 % disp('非合作阶段成果');
 % disp(['风电非合作最大利润 = ', num2str(ideal_profit_WT_noncoop)]);
@@ -26,11 +26,3 @@ run('result_summary.m');
 % disp(['风电合作购电量 = ', num2str(sol_P_WT2H_coop)]);
 % disp(['光伏合作购电量 = ', num2str(sol_P_PV2H_coop)]);
 % disp(['电网合作购电量 = ', num2str(sol_P_H_from_G_coop)]);
-
-surplus_actual = ...
-    (ideal_profit_WT_coop_Total - ideal_profit_WT_G_only) ...
-  + (ideal_profit_PV_coop_Total -ideal_profit_PV_G_only) ...
-  + (ideal_cost_H_noncoop_Total - ideal_cost_H_coop_Total);
-
-disp('以实际合作前收益为破裂点时的可分配剩余：');
-disp(surplus_actual);

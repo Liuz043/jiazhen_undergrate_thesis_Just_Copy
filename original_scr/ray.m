@@ -40,7 +40,7 @@ a02 = value(a2); %获取t时刻光电场向电网出售的电量
 c02 = value(ppv2ht); %获取t时刻光伏主体向电制氢主体的售电量
 f02 = value(Fray); %获取光电利润
 shijig = sum(rayf) * d2;
-sg = shijig - a13;
+sg = shijig - a23;
 %% 绘图
 hours = 1:24;
 y1label2 = a02;      % 左轴数据（向电网售电量）

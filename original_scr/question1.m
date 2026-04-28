@@ -77,7 +77,7 @@ a_24 = f2 * sum(p_pv2ht)^2 + g2 * sum(p_pv2ht);%光伏电场售电给电制氢的成本
 Wpv = a_21 - a_23 - a_24; %光伏场合作的整体收益
 
 chg = phgt * b1 ; %电制氢主体从电网购电的成本
-chm = kel * sum(pelt) + kbat * (sum(pbatct)+sum(pbatdt)^2); %电制氢运维成本
+chm = kel * sum(pelt) + kbat * (sum(pbatct)+sum(pbatdt))^2; %电制氢运维成本
 Wh =  -(chg + chm); %电制氢的全部成本
 Fz1 = -(Wwt + Wpv + Wh); %合作1的整体收益
 

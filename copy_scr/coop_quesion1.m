@@ -15,9 +15,6 @@ P_com_coop = sdpvar(1,24); %合作时压缩机耗电功率
 E_ba_coop = sdpvar(1,24); %t时刻储能量
 ubatt_coop = binvar(1,24,'full'); %二进制变量，用来表示t时刻是充电还是放电，放电时为0
 
-price_WT2G = 0.34; %风电电价
-price_PV2G = 0.40; %光伏上网电价
-
 %% 定义约束条件集合确保风光氢联盟效益最大化
 C4 = [];
 
@@ -92,7 +89,7 @@ for i = 1:24
 end
 
 %% 定义目标函数，最大化风光氢联盟的总利润
-revenue_WT_coop = sum(P_WT2G_coop) * price_WT2G % 向电网出售的风电收益
+revenue_WT_coop = sum(P_WT2G_coop) * price_WT2G; % 向电网出售的风电收益
 cost_WT_om_coop = sum(WT_avg) * cost_WT_om_coeff; % 风电运维成本
 cost_WT2H_coop = cost_WT2H_quad_coeff * sum(P_WT2H_coop)^2 ...
     + cost_WT2H_linear_coeff * sum(P_WT2H_coop);% 售电给电制氢的成本

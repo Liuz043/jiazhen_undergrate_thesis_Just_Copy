@@ -14,15 +14,6 @@ end
 P_WT2G = sdpvar(1,24);  % 向电网出售的电量
 P_WT2H = sdpvar(1,24);  % 向电制氢主体的售电量
 
-% 电网分时价格
-price_G = [0.3376; 0.3376; 0.3376; 0.3376; 0.3376; 0.3376; 0.3376; 0.3376; 0.5980; 0.5980; 0.5980; 0.5980;
-    0.8654; 0.8654; 0.8654; 0.5980; 0.5980; 0.5980; 0.5980; 0.8654; 0.8654; 0.8654; 0.8654; 0.3376;];  %每小时电网工业电价
-
-price_WT2G = 0.34; % 风电上网电价
-cost_WT_om_coeff = 0.008; % 风电场单位发电量维护成本系数
-cost_WT2H_quad_coeff = 0.00003; % 过网费折算二次系数
-cost_WT2H_linear_coeff = 0.01; % 过网费折算线性系数
-
 %% 定义约束条件
 C1 = [];
 
@@ -85,8 +76,8 @@ hold off;
 % 绘制工业电价与风电价格和光电价格比较图
 time = 1:24;
 
-price_WT2G = 0.34 * ones(size(time)); % 风电上网电价
-d2 = 0.40 * ones(size(time)); % 光伏上网电价
+price_WT2G_line = 0.34 * ones(size(time)); % 风电上网电价
+price_PV2G_line = 0.40 * ones(size(time)); % 光伏上网电价
 
 figure;
 hold on;
@@ -94,8 +85,8 @@ hold on;
 % 绘制折线（工业电价）
 plot(time, price_G, 'b-o', 'LineWidth', 1.5, 'MarkerSize', 6, 'MarkerFaceColor', 'b');
 % 绘制横线（更规范的写法）
-plot(time, price_WT2G, 'r--', 'LineWidth', 2); % 红色虚线
-plot(time, d2, 'g:', 'LineWidth', 2);  % 绿色点划线（更正线型）
+plot(time, price_WT2G_line, 'r--', 'LineWidth', 2); % 红色虚线
+plot(time, price_PV2G_line, 'g:', 'LineWidth', 2);  % 绿色点划线（更正线型）
 % 图表美化
 title('工业电价与风电价格和光电价格比较图 (24小时)', 'FontSize', 12, 'FontWeight', 'bold');
 xlabel('时间 (小时)', 'FontSize', 10);

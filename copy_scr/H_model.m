@@ -10,44 +10,15 @@ for i = 1:24
 end
 
 %% 定义决策变量
-H_yield_coeff = 0.019224; %单位产氢量
-
-P_el_max = 5000; %最大约束功率
-P_el_rp_max = 1000; %功率爬坡约束
-
-H_spec2Heat = 14.304; %氢气比热容常数
-T_in = 40; %压缩机输入氢气的温度
-n_com = 0.7; %压缩机工作效率
-K = 1.4; %氢气等熵指数
-k1 = (K-1)/K;% 氢气压缩机模型公式的指数次方
-
-volume_tank_H = 500; %氢气容量
-Temp_tank_H = 60; %储氢罐内部温度
-H_mol = 0.002; %氢气摩尔质量
-Flow_com_H = 0.004; %t时刻压缩氢气流量
-H_tank_press_min = 20; %储氢罐最小气压
-H_tank_press_max = 40; %储氢罐最大气压
-
-E_ba_min = 200; %储能系统最小储能量
-E_ba_max = 1800; %储能系统最大储能量
-E_ba_c = 0.95; %充电效率
-E_ba_dis = 0.96; %放电效率
-P_ba_c_max = 500; %最大充电功率
-P_ba_dis_max = 600; %最大放电功率
-
-el_om_coeff = 0.022; %电解槽运维成本系数
-ba_om_coeff = 0.00018; %储能运维成本系数
-
 P_el = sdpvar(1,24); %每小时输入电功率
 P_com =  sdpvar(1,24); %压缩机耗电功率
 H_tank_press = sdpvar(1,24); %t时刻储氢罐内部气压
-H_tank_t0 = 28; %定义储氢罐内部0时刻气压
 
 P_H_from_G =  sdpvar(1,24); %t时刻电制氢主体向电网买的购电量
 P_ba_c =  sdpvar(1,24); %t时刻充电功率
 P_ba_dis =  sdpvar(1,24); %t时刻放电功率
 ubatt = binvar(1,24,'full'); %二进制变量，用来表示t时刻是充电还是放电，放电时为0
-E_ba_t0 = 1000; %t0时刻储能量
+
 E_ba = sdpvar(1,24); %t时刻储能量
 
 %% 求解氢能个体与电网的成本，不参与合作

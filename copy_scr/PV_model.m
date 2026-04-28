@@ -12,11 +12,6 @@ end
 %% 定义决策变量
 P_PV2G = sdpvar(1,24);  % 向电网出售的电量
 P_PV2H = sdpvar(1,24);  % 向电制氢主体的售电量
-price_PV2G = 0.40; % 光伏上网电价
-cost_PV_om_coeff = 0.0085; % 光伏单位发电量维护成本系数
-
-cost_PV2H_quad_coeff = 0.00003; % 过网费折算系数1
-cost_PV2H_linear_coeff = 0.01; % 过网费折算系数2
 
 %% 定义约束条件
 C2 = [];

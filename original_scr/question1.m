@@ -82,7 +82,7 @@ Wh =  -(chg + chm); %电制氢的全部成本
 Fz1 = -(Wwt + Wpv + Wh); %合作1的整体收益
 
 %%%% 求解问题 
-options = sdpsettings('solver','cplex'); % 使用求解器cplex求解 
+options = sdpsettings('solver','gurobi'); % 使用求解器cplex求解 
 p1 = optimize(C4, Fz1, options); % 服从C，最小化f   
 %%%% 输出信息 
 fprintf('Example problem: %s. \n', p1.info);   

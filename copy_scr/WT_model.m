@@ -45,10 +45,10 @@ fprintf('Example problem: %s. \n', p1.info);
 sol_P_WT2G = value(P_WT2G); % 获取向电网出售的电量
 sol_P_WT2H = value(P_WT2H); % 获取向电制氢出售的电量
 
-WT_noncoop_ideal_profit = - value(obj_WT_profit); % 获取风电利润
+ideal_profit_WT_noncoop = - value(obj_WT_profit); % 获取风电利润
 
-revenue_WT = sum(WT_avg) * price_WT2G; % 理想最大收入
-profit_WT = revenue_WT - cost_WT_om; % 理想最大利润（指全部卖给电网）
+ideal_revenue_WT_G_only = sum(WT_avg) * price_WT2G; % 理想最大收入
+ideal_profit_WT_G_only = ideal_revenue_WT_G_only - cost_WT_om; % 理想最大利润（指全部卖给电网）
 
 %% 绘图
 % 绘制风电主体每小时售电量

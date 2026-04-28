@@ -77,7 +77,7 @@ chg = phg0t * b1; %电制氢主体从电网购电的成本
 chm = kel * sum(pel0t) + kbat * (sum(pbat0ct)+sum(pbat0dt)^2); %电制氢运维成本
 Uh0 =  chg + chm; %电制氢的全部成本  
 %%%% 求解问题 
-options = sdpsettings('solver','cplex'); % 使用求解器cplex求解 
+options = sdpsettings('solver','gurobi'); % 使用求解器cplex求解 
 p1 = optimize(C3, Uh0, options); % 服从C，最小化f   
 %%%% 输出信息 
 fprintf('Example problem: %s. \n', p1.info);   

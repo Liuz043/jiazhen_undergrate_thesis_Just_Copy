@@ -73,11 +73,11 @@ end
 %% 定义目标函数
 cost_H_from_G = P_H_from_G * price_G; %电制氢主体从电网购电的成本
 cost_H_om = el_om_coeff * sum(P_el) + ba_om_coeff * (sum(P_ba_c)+sum(P_ba_dis))^2; %电制氢运维成本
-obj_H_Total_cost =  cost_H_from_G + cost_H_om; %电制氢的全部成本  
+obj_cost_H_Total =  cost_H_from_G + cost_H_om; %电制氢的全部成本  
 
 %% 求解问题 
 options = sdpsettings('solver','gurobi'); % 使用求解器gurobi求解 
-p1 = optimize(C3, obj_H_Total_cost, options); % 服从C，最小化f   
+p1 = optimize(C3, obj_cost_H_Total, options); % 服从C，最小化f   
 
 fprintf('Example problem: %s. \n', p1.info);   
 
@@ -87,7 +87,7 @@ sol_P_el = value(P_el); %获取电解槽设备功率
 sol_P_ba_c = value(P_ba_c); %获取充电功率
 sol_P_com = value(P_com); %获取压缩机设备功率
 
-H_noncoop_ideal_cost = value(obj_H_Total_cost); %获取电制氢成本
+ideal_cost_H_noncoop_Total = value(obj_cost_H_Total); %获取电制氢成本
 
 %% 绘图
 hours = 1:24;

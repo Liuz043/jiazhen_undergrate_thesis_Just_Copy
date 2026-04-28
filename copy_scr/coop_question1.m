@@ -93,20 +93,20 @@ revenue_WT_coop = sum(P_WT2G_coop) * price_WT2G; % 向电网出售的风电收益
 cost_WT_om_coop = sum(WT_avg) * cost_WT_om_coeff; % 风电运维成本
 cost_WT2H_coop = cost_WT2H_quad_coeff * sum(P_WT2H_coop)^2 ...
     + cost_WT2H_linear_coeff * sum(P_WT2H_coop);% 售电给电制氢的成本
-revenue_WT_coop_total = revenue_WT_coop - cost_WT_om_coop - cost_WT2H_coop; % 风电主体总利润
+profit_WT_coop_Total = revenue_WT_coop - cost_WT_om_coop - cost_WT2H_coop; % 风电主体总利润
 
 revenue_PV_coop = sum(P_PV2G_coop) * price_PV2G; % 向电网出售的光伏收益
 cost_PV_om_coop = sum(PV_avg) * cost_PV_om_coeff; % 光伏运维成本
 cost_PV2H_coop = cost_PV2H_quad_coeff * sum(P_PV2H_coop)^2 ...
     + cost_PV2H_linear_coeff * sum(P_PV2H_coop); % 售电给电制氢的成本
-revenue_PV_coop_total = revenue_PV_coop - cost_PV_om_coop - cost_PV2H_coop; % 光伏主体总利润
+profit_PV_coop_Total = revenue_PV_coop - cost_PV_om_coop - cost_PV2H_coop; % 光伏主体总利润
 
 cost_H_from_G_coop = P_H_from_G_coop * price_G; % 电制氢主体从电网购电的成本
 cost_H_om_coop = el_om_coeff * sum(P_el_coop) ...
     + ba_om_coeff * (sum(P_ba_c_coop)+sum(P_ba_dis_coop))^2; % 电制氢运维成本
-cost_H_coop_total = cost_H_from_G_coop + cost_H_om_coop; % 电制氢主体总成本
+cost_H_coop_Total = cost_H_from_G_coop + cost_H_om_coop; % 电制氢主体总成本
 
-obj_neg_revenue_coop = - (revenue_WT_coop_total + revenue_PV_coop_total - cost_H_coop_total); % 联盟总利润
+obj_neg_revenue_coop = - (profit_WT_coop_Total + profit_PV_coop_Total - cost_H_coop_Total); % 联盟总利润
 
 %% 求解问题
 options = sdpsettings('solver','gurobi'); % 使用求解器gurobi求解
@@ -114,11 +114,15 @@ p2 = optimize(C4, obj_neg_revenue_coop, options); % 服从C4，最小化obj_neg_revenu
 
 fprintf('Cooperation problem: %s. \n', p2.info);
 
-Total_coop_revenue = - value(obj_neg_revenue_coop); % 联盟总利润
+Total_coop_profit = - value(obj_neg_revenue_coop); % 联盟总利润
 
 sol_P_WT2H_coop = value(P_WT2H_coop); % 获取风电向电制氢出售的电量
 sol_P_PV2H_coop = value(P_PV2H_coop); % 获取光伏向电制氢出售的电量
 sol_P_H_from_G_coop = value(P_H_from_G_coop); % 获取电制氢电网购电量
+
+ideal_cost_H_coop_Total = value(cost_H_coop_Total); % 获取电制氢主体总成本
+ideal_profit_WT_coop_Total = value(profit_WT_coop_Total); % 获取风电主体总利润
+ideal_profit_PV_coop_Total = value(profit_PV_coop_Total); % 获取光伏主体总利润
 
 %% 绘图
 hours = 1:24;

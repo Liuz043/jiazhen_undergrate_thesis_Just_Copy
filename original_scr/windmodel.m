@@ -33,7 +33,7 @@ a13 = sum(windf) * e1 ; %风电场发电所需成本
 a14 = f1 * sum(pwt2ht)^2 + g1 * sum(pwt2ht);%风电场售电给电制氢的成本
 Fwind =  - (a11 + Uwt2h - a13 - a14); %利润减成本，由于是最小化求解，前面加负号
 %% 求解问题 
-options = sdpsettings('solver','cplex'); % 使用求解器cplex求解 
+options = sdpsettings('solver','gurobi'); % 使用求解器cplex求解 
 p1 = optimize(C1, Fwind, options); % 服从C，最小化f 
 %% 输出信息 
 fprintf('Example problem: %s. \n', p1.info); 

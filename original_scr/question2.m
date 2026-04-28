@@ -27,7 +27,7 @@ C5 = [C5,  Wwt2 + U_wt2h >= Uwt02]; %风能主体的最低个体利益
 C5 = [C5,  Wpv2 + U_pv2h >= Upv02]; %光伏主体的最低个体利益
 %% 定义目标函数f 
 Fz2 = -(log(Wh2- U_wt2h- U_pv2h- Uh02)+ log(Wwt2+ U_wt2h- Uwt02)+ log(Wpv2+ U_pv2h- Upv02)); %合作2的整体收益
-setenv('PATH', [getenv('PATH') ';D:\Matlab 2019a\toolbox\mosek\11.0\tools\platform\win64x86\bin']); %mosek求解器问题，需要设置路径识别
+% setenv('PATH', [getenv('PATH') ';D:\Matlab 2019a\toolbox\mosek\11.0\tools\platform\win64x86\bin']); %mosek求解器问题，需要设置路径识别
 %% 求解问题 
 options = sdpsettings('solver','mosek'); % 使用求解器mosek求解 指数问题
 p1 = optimize(C5, Fz2, options); % 服从C，最小化f   

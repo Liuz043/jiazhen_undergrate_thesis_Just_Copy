@@ -43,10 +43,10 @@ fprintf('Example problem: %s. \n', p1.info);
 sol_P_PV2G = value(P_PV2G); % 获取向电网出售的电量
 sol_P_PV2H = value(P_PV2H); % 获取向电制氢出售的电量
 
-PV_noncoop_ideal_profit = - value(obj_PV_neg_profit); % 获取光伏利润
+ideal_profit_PV_noncoop = - value(obj_PV_neg_profit); % 获取光伏利润
 
-revenue_PV_G_only = sum(PV_avg) * price_PV2G; % 理想最大收入
-profit_PV_G_only = revenue_PV_G_only - cost_PV_om; % 理想最大利润（指全部卖给电网）
+ideal_revenue_PV_G_only = sum(PV_avg) * price_PV2G; % 理想最大收入
+ideal_profit_PV_G_only = ideal_revenue_PV_G_only - cost_PV_om; % 理想最大利润（指全部卖给电网）
 
 %% 绘图
 hours = 1:24;

@@ -2,7 +2,7 @@ clear;
 clc;
 close all;
 
-rng(202); % 设置随机数种子，确保结果可复现
+rng(20); % 设置随机数种子，确保结果可复现
 
 run('draw_scene.m');
 
@@ -12,14 +12,25 @@ run('WT_model.m');
 run('PV_model.m');
 run('H_model.m');
 
-run('coop_quesion1.m');
+run('coop_question1.m');
+run('coop_question2.m');
 
-disp('非合作阶段成果');
-disp(['风电非合作最大利润 = ', num2str(WT_noncoop_ideal_profit)]);
-disp(['光伏非合作最大利润 = ', num2str(PV_noncoop_ideal_profit)]);
-disp(['电制氢非合作最小成本 = ', num2str(H_noncoop_ideal_cost)]);
+run('result_summary.m');
+
+% disp('非合作阶段成果');
+% disp(['风电非合作最大利润 = ', num2str(ideal_profit_WT_noncoop)]);
+% disp(['光伏非合作最大利润 = ', num2str(ideal_profit_PV_noncoop)]);
+% disp(['电制氢非合作最小成本 = ', num2str(ideal_cost_H_noncoop_Total)]);
 
 % disp('合作阶段1电制氢购电成果');
 % disp(['风电合作购电量 = ', num2str(sol_P_WT2H_coop)]);
 % disp(['光伏合作购电量 = ', num2str(sol_P_PV2H_coop)]);
 % disp(['电网合作购电量 = ', num2str(sol_P_H_from_G_coop)]);
+
+surplus_actual = ...
+    (ideal_profit_WT_coop_Total - ideal_profit_WT_G_only) ...
+  + (ideal_profit_PV_coop_Total -ideal_profit_PV_G_only) ...
+  + (ideal_cost_H_noncoop_Total - ideal_cost_H_coop_Total);
+
+disp('以实际合作前收益为破裂点时的可分配剩余：');
+disp(surplus_actual);

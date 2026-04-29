@@ -7,9 +7,6 @@
 T = 24;
 hours = 1:T;
 
-%% 求解器设置
-solver_name = 'gurobi';
-
 %% 电价参数
 
 price_G = [
